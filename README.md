@@ -5,6 +5,6 @@
 
 <h1 align="center">Gain Knowledge On Round 100</h1>
 
-Gain Knowledge Points when you beat round 100! By default you gain 1 but you can configure it to whatever you like! Works in singleplayer and co-op.
+Gain Knowledge Points when you beat round 100! By default you gain 1 point, but you can configure the amount in the mod settings! Works in singleplayer and co-op
 
 [![Requires BTD6 Mod Helper](https://raw.githubusercontent.com/gurrenm3/BTD-Mod-Helper/master/banner.png)](https://github.com/gurrenm3/BTD-Mod-Helper#readme)
