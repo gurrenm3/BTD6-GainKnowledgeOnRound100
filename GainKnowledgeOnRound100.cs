@@ -21,6 +21,10 @@ public class GainKnowledgeOnRound100 : BloonsTD6Mod
     public override void OnApplicationStart()
     {
         ModHelper.Msg<GainKnowledgeOnRound100>("GainKnowledgeOnRound100 loaded!");
+
+        knowledgePointsToGain.min = 1;
+        knowledgePointsToGain.max = 5;
+        knowledgePointsToGain.slider = true;
     }
 
     public override void OnRoundEnd()
