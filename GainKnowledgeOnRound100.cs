@@ -15,7 +15,9 @@ namespace GainKnowledgeOnRound100;
 
 public class GainKnowledgeOnRound100 : BloonsTD6Mod
 {
-    // mod setting to track reward amount.
+    /// <summary>
+    /// The mod setting that controls how many knowledge points the player earns by beating round 100.
+    /// </summary>
     public ModSettingInt knowledgePointsToGain = new ModSettingInt(1)
     {
         min = 1,
@@ -23,30 +25,103 @@ public class GainKnowledgeOnRound100 : BloonsTD6Mod
         slider = true
     };
 
-    const int roundNumberForReward = 99;  // number is 1 less than the round we want.
+    /// <summary>
+    /// The round number that the player earns knowledge points from.
+    /// <br/>Must be 1 less than the desired round number.
+    /// </summary>
+    public const int roundNumberToEarnReward = 99;
 
+    private bool isSandboxMode;
+
+    /// <summary>
+    /// Runs code when the game is starting. 
+    /// <br/>Tells the user that the mod has loaded.
+    /// </summary>
     public override void OnApplicationStart()
     {
         ModHelper.Msg<GainKnowledgeOnRound100>("GainKnowledgeOnRound100 loaded!");
     }
 
+    /// <summary>
+    /// Runs code when the match is first joined.
+    /// <br/>Caches whether or not the player is in sandbox mode at the beginning of the game to avoid checking it repeatedly.
+    /// </summary>
+    public override void OnMatchStart()
+    {
+        isSandboxMode = IsSandboxMode();
+    }
+
+    /// <summary>
+    /// Runs code at the end of each round. 
+    /// <br/>Will award knowledge points to the player if the round that just ended is 100.
+    /// </summary>
     public override void OnRoundEnd()
     {
+        TryAddKnowledgePoints();
+    }
+
+    /// <summary>
+    /// Attempts to add the knowledge points if round 100 was beaten and you are not in sandbox mode.
+    /// </summary>
+    public void TryAddKnowledgePoints()
+    {
         // doesn't work in sandbox mode!
-        if (InGame.instance.mapEditorInSandboxMode || InGame.instance.GetSimulation().sandbox)
-            return;        
+        if (isSandboxMode)
+            return;
 
         // don't run if it's not the correct round
-        int currentRound = InGame.instance.GetSimulation().GetCurrentRound();
-        if (currentRound != roundNumberForReward)
+        if (!CanEarnRewardThisRound())
             return;
 
         // apply knowledge points.
-        KnowledgePointsLoot knowledgePointsLoot = new KnowledgePointsLoot(knowledgePointsToGain);
-        knowledgePointsLoot.Apply(LootFrom.round100);
+        int amountToGain = (int)knowledgePointsToGain.GetValue();
+        GiveKnowledgePoints(amountToGain);
 
         // show popup and debug message.
-        string rewardText = $"Congratulations on beating round {roundNumberForReward + 1}! You gained {knowledgePointsToGain.GetValue()} more knowledge point(s)!!";
+        NotifyKnowledgePointsGained(amountToGain);
+    }
+
+    /// <summary>
+    /// Returns whether or not the game is in sandbox mode.
+    /// </summary>
+    /// <returns></returns>
+    private bool IsSandboxMode()
+    {
+        return InGame.instance.mapEditorInSandboxMode || InGame.instance.GetSimulation().sandbox;
+    }
+
+    /// <summary>
+    /// Returns whether or not the reward can be earned on the current round.
+    /// </summary>
+    /// <returns></returns>
+    private bool CanEarnRewardThisRound()
+    {
+        int currentRound = InGame.instance.GetSimulation().GetCurrentRound();
+
+        bool isDesiredRound = currentRound == roundNumberToEarnReward;
+        bool doesPlayerHaveHealth = InGame.instance.GetHealth() > 0;
+
+        // can only earn rewards if the player beat the desired round while still having health.
+        return isDesiredRound && doesPlayerHaveHealth;
+    }
+
+    /// <summary>
+    /// Gives knowledge points to the player.
+    /// </summary>
+    /// <param name="amount">Number of knowledge points to give to the player.</param>
+    private void GiveKnowledgePoints(int amount)
+    {
+        KnowledgePointsLoot knowledgePointsLoot = new KnowledgePointsLoot(amount);
+        knowledgePointsLoot.Apply(LootFrom.round100);
+    }
+
+    /// <summary>
+    /// Notifies the player that they have gained knowledge points.
+    /// </summary>
+    /// <param name="amount">The number of knowledge points that the user gained.</param>
+    private void NotifyKnowledgePointsGained(int amount)
+    {
+        string rewardText = $"Congratulations on beating round {roundNumberToEarnReward + 1}! You gained {amount} more knowledge point(s)!!";
         ModHelper.Msg<GainKnowledgeOnRound100>(rewardText);
         Game.instance.GetPopupScreen().ShowOkPopup(rewardText);
     }
