@@ -46,7 +46,7 @@ public class GainKnowledgeOnRound100 : BloonsTD6Mod
         knowledgePointsLoot.Apply(LootFrom.round100);
 
         // show popup and debug message.
-        string rewardText = $"Congratulations on beating round {roundNumberForReward + 1}! You gained {knowledgePointsToGain.GetValue()} more knowledge point!!";
+        string rewardText = $"Congratulations on beating round {roundNumberForReward + 1}! You gained {knowledgePointsToGain.GetValue()} more knowledge point(s)!!";
         ModHelper.Msg<GainKnowledgeOnRound100>(rewardText);
         Game.instance.GetPopupScreen().ShowOkPopup(rewardText);
     }
