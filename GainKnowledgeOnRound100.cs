@@ -15,22 +15,23 @@ namespace GainKnowledgeOnRound100;
 
 public class GainKnowledgeOnRound100 : BloonsTD6Mod
 {
-    public ModSettingInt knowledgePointsToGain = new ModSettingInt(1); // mod setting to track reward amount.
+    // mod setting to track reward amount.
+    public ModSettingInt knowledgePointsToGain = new ModSettingInt(1)
+    {
+        min = 1,
+        max = 5,
+        slider = true
+    };
+
     const int roundNumberForReward = 99;  // number is 1 less than the round we want.
 
     public override void OnApplicationStart()
     {
         ModHelper.Msg<GainKnowledgeOnRound100>("GainKnowledgeOnRound100 loaded!");
-
-        knowledgePointsToGain.min = 1;
-        knowledgePointsToGain.max = 5;
-        knowledgePointsToGain.slider = true;
     }
 
     public override void OnRoundEnd()
     {
-        base.OnRoundEnd();
-
         // doesn't work in sandbox mode!
         if (InGame.instance.mapEditorInSandboxMode || InGame.instance.GetSimulation().sandbox)
             return;        
