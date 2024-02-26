@@ -16,7 +16,7 @@ namespace GainKnowledgeOnRound100;
 public class GainKnowledgeOnRound100 : BloonsTD6Mod
 {
     public ModSettingInt knowledgePointsToGain = new ModSettingInt(1); // mod setting to track reward amount.
-    const int roundNumberForReward = 2;  // number is 1 less than the round we want.
+    const int roundNumberForReward = 99;  // number is 1 less than the round we want.
 
     public override void OnApplicationStart()
     {
