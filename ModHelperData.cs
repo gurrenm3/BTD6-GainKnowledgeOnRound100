@@ -3,7 +3,7 @@ namespace GainKnowledgeOnRound100;
 public static class ModHelperData
 {
     public const string WorksOnVersion = "40.0";
-    public const string Version = "1.0.3";
+    public const string Version = "1.0.4";
     public const string Name = "Gain Knowledge On Round 100";
 
     public const string Description = "Gain Knowledge Points when you beat round 100! Gain 1 point by default, or configure it in the mod settings! Works in single-player and co-op.";
