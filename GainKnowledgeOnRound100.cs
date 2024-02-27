@@ -99,10 +99,9 @@ public class GainKnowledgeOnRound100 : BloonsTD6Mod
         int currentRound = InGame.instance.GetSimulation().GetCurrentRound();
 
         bool isDesiredRound = currentRound == roundNumberToEarnReward;
-        bool doesPlayerHaveHealth = InGame.instance.GetHealth() > 0;
 
-        // can only earn rewards if the player beat the desired round while still having health.
-        return isDesiredRound && doesPlayerHaveHealth;
+        // can only earn rewards if the player beat the desired round.
+        return isDesiredRound ;
     }
 
     /// <summary>
