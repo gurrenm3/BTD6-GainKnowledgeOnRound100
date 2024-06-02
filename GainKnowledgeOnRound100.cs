@@ -14,6 +14,20 @@ using System.Linq;
 
 namespace GainKnowledgeOnRound100;
 
+/// <summary>
+/// [Overview of the mod]
+/// This mod gives the player extra Monkey Knowledge on certain rounds.
+/// By default you will gain the reward on every 25 rounds from round 100 to 300.
+/// The purpose of the mod is intended to make late game more worthwhile and it does not work in Sandbox.
+/// 
+/// [Summary of the code]
+/// Whenever the player joins a game, the mod checks if it's sandbox or not and stores it for later to avoid checking more than once.
+/// Then, each time the player beats a round the mod checks the previously stored value to see if they are in sandbox mode or not.
+/// If they are then it will stop running code and not give them any rewards.
+/// Otherwise it will check what round they just beat. They will earn knowledge points if the round they just
+/// completed is one they're supposed to earn extra knowledge on. If it is not then they earn nothing, otherwise they will be
+/// awarded the points and an in-game popup will notify them that they extra knowledge points.
+/// </summary>
 public class GainKnowledgeOnRound100 : BloonsTD6Mod
 {
     /// <summary>
@@ -33,7 +47,14 @@ public class GainKnowledgeOnRound100 : BloonsTD6Mod
     public readonly int[] roundNumbersToEarnReward = new[]
     {
         99,
-        124
+        124,
+        149,
+        174,
+        199,
+        224,
+        249,
+        274,
+        299
     };
 
     private bool isSandboxMode;
@@ -81,7 +102,7 @@ public class GainKnowledgeOnRound100 : BloonsTD6Mod
             return;
 
         // apply knowledge points.
-        int amountToGain = (int)knowledgePointsToGain.GetValue();
+        int amountToGain = knowledgePointsToGain;
         GiveKnowledgePoints(amountToGain);
 
         // show popup and debug message.
